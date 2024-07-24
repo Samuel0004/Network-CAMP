@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
+#include <time.h>
 
 #define BUF_SIZE 4096
 void error_handling(char *message);
@@ -22,6 +23,7 @@ typedef struct packet_t{
 
 int main(int argc, char *argv[])
 {
+	clock_t start, end;
 	int serv_sock;
 	char file_name[BUF_SIZE];
 	long file_size;
@@ -67,8 +69,11 @@ int main(int argc, char *argv[])
 
 	int read_len = 0;
 
+	start = clock();
+
 	while(read_len < file_size) 
 	{	
+		
 		packet_t *recv_file = (packet_t*)malloc(sizeof(packet_t));
 
 		char message[BUF_SIZE];
@@ -97,6 +102,12 @@ int main(int argc, char *argv[])
 		}
 
 	}
+	end = clock();
+	
+	int throughput;
+	throughput = file_size/(end - start);
+
+	printf("Throughput: %dBps \n",throughput);
 
 	close(serv_sock);
 	return 0;
