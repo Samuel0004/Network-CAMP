@@ -1,0 +1,8 @@
+Pohang 30000
+Pohang Weather 40000
+Pohang Cafe 80000
+Pohang Restaurant 50000
+Pohang Hotel 10000
+Posco 10000
+Posix 10000
+Decapo 10000
