@@ -174,7 +174,7 @@ void Print_Result(int count)
             printf("%s\n", word_t_array[i].word + (pos - word_lower) + strlen(word_in_search));
         } else {
             // No match, print the word normally
-            printf("%s\n", word_t_array[i].word);
+            //printf("%s\n", word_t_array[i].word);
         }
     }
     
