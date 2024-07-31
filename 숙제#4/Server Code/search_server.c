@@ -140,7 +140,7 @@ void SearchEngine(char *search_word, int client_sock)
     
     // First Send Count
     write(client_sock, &count, sizeof(count));
-    
+
     // Then Send MAX 10 Most Searched Words
     for (int i = 0; i < count; i++)
     {
