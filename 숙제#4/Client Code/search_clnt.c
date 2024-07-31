@@ -71,11 +71,20 @@ int main(int argc, char *argv[])
         error_handling("connect() error");
     }
 
+    set_input_mode();
+
+    printf(CLEAR_LINES);
+    printf("\033[H\033[2J"); // Move to top left and clear the console
+    fflush(stdout);
+    write(0, FILLER, strlen(FILLER)); //Print "Search Word:" in GREEN 
 
     pthread_create(&snd_thread, NULL, send_search_word, (void *)&sock);
     pthread_create(&rcv_thread, NULL, recv_search_result, (void *)&sock);
     pthread_join(snd_thread, NULL);
     pthread_join(rcv_thread, NULL);
+
+  
+    reset_input_mode();
     close(sock);
     return 0;
 }
@@ -86,8 +95,8 @@ void *send_search_word(void *arg) // send thread main
     int idx = -1;
     int sock = *((int *)arg);
     
-    set_input_mode();
-    write(0, FILLER, strlen(FILLER));
+    
+    
     while (read(0, &ch, 1) > 0)
     {
         if (ch == 4)// ctrl + d 
@@ -123,7 +132,7 @@ void *send_search_word(void *arg) // send thread main
             write(sock, word_in_search, strlen(word_in_search));
     }
 
-    reset_input_mode();
+    //reset_input_mode();
     return NULL;
 }
 
@@ -137,7 +146,8 @@ void *recv_search_result(void *arg) // read thread main
         // Receive Count
         int count = Receive_Count();
 
-        Receive_Rearch_Result(count);
+        if(count>0)
+            Receive_Rearch_Result(count);
 
         Print_Result(count);
     }
@@ -147,7 +157,7 @@ void *recv_search_result(void *arg) // read thread main
 void Print_Result(int count)
 {
     printf("\033[H");       // Move origin
-    printf("\033[2B");      // Move two lines down 
+    printf("\033[1B");      // Move two lines down 
     printf(CLEAR_LINES);    // Clear clear old search result
     printf("-----------------------------\n");
    
@@ -179,7 +189,6 @@ void Print_Result(int count)
     }
     
     printf("\033[H");  // Move origin again
-    printf("\033[1B"); // Move Down a line
     printf("\033[%dC", 13+search_word_len); // Move cursor to end of current searching word 
     fflush(stdout);
 
