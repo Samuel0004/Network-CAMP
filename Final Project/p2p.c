@@ -127,6 +127,8 @@ int main(int argc, char *argv[])
     // Initialize this socket
     this_sock = Initialize_Socket(this_port_num);
 
+    printf("\033[H\033[J");
+
     if (rflag == 1)
     {
         // Receiver Code
@@ -338,7 +340,7 @@ void Print_Sender_Progress(int count, int peer_num, long sent_len, float elapsed
     total_time += elapsed_time;
 
     // Calculate Throughput in Mbps
-    float throughput = (accum_sent_len / total_time) / 1000000;
+    float throughput = (accum_sent_len / total_time) * 0.000008f;
 
     // Calcualte Progress
     int progress = (accum_sent_len * MAX_PROGESS) / file_info->total_file_size;
@@ -359,7 +361,7 @@ void Print_Sender_Progress(int count, int peer_num, long sent_len, float elapsed
     printf("\033[%dE", count + 1);
 
     // Print Receiving Information
-    printf("  To Receiving Peer #%d : %.1f Mbps (%ld Bytes Sent / %.1f s)", peer_num, (sent_len / elapsed_time) / 1000000, sent_len, elapsed_time);
+    printf("  To Receiving Peer #%d : %.1f Mbps (%ld Bytes Sent / %.1f s)", peer_num, (sent_len / elapsed_time)  * 0.000008f, sent_len, elapsed_time);
 
     // Move Up again
     printf("\033[%dF", count + 1);
@@ -449,7 +451,7 @@ void Print_Receiver_Progress(int count, int peer_num, long sent_len, float elaps
     total_time += elapsed_time;
 
     // Calculate Throughput in Mbps
-    float throughput = (accum_sent_len / total_time) / 1000000;
+    float throughput = (accum_sent_len / total_time) * 0.000008f;
 
     // Calcualte Progress
     int progress = (accum_sent_len * MAX_PROGESS) / file_info->total_file_size;
@@ -472,11 +474,11 @@ void Print_Receiver_Progress(int count, int peer_num, long sent_len, float elaps
     // Print Receiving Information
     if (peer_num == -1)
     {
-        printf("  From Sending Peer : %.1f Mbps (%ld Bytes Sent / %.1f s)", (sent_len / elapsed_time) / 1000000, sent_len, elapsed_time);
+        printf("  From Sending Peer : %.1f Mbps (%ld Bytes Sent / %.1f s)", (sent_len / elapsed_time)  * 0.000008f, sent_len, elapsed_time);
     }
     else
     {
-        printf("  From Receiving Peer #%d : %.1f Mbps (%ld Bytes Sent / %.1f s)", peer_num, (sent_len / elapsed_time) / 1000000, sent_len, elapsed_time);
+        printf("  From Receiving Peer #%d : %.1f Mbps (%ld Bytes Sent / %.1f s)", peer_num, (sent_len / elapsed_time)  * 0.000008f, sent_len, elapsed_time);
     }
 
     // Move Up again
